@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {addLine, passLine} from '../store/lines'
 import {connect} from 'react-redux'
+import history from '../history'
 
 export class NewMessageEntry extends Component {
   constructor() {
@@ -55,12 +56,13 @@ export class NewMessageEntry extends Component {
       }
       localStorage.setItem('poem', JSON.stringify(poem)) // create poem for guest user
     }
-    addLine(this.state.line1)
-    passLine(this.state.line2)
+    addLine(this.state.line1, this.props.roomKey)
+    passLine(this.state.line2, this.props.roomKey)
     this.setState({line1: '', line2: '', waitingForTurn: true})
   }
 
   render() {
+    console.log(this.props)
     return (
       <div>
         {!this.state.waitingForTurn ? (
@@ -94,13 +96,21 @@ export class NewMessageEntry extends Component {
             <h1>Waiting for your partner...</h1>
           </div>
         )}
+        <button
+          type="button"
+          onClick={() => {
+            history.push('/publish')
+          }}
+        >
+          Publish
+        </button>
       </div>
     )
   }
 }
 
-const mapState = state => {
-  return {prompt: state.lines.prompt}
-}
+// const mapState = state => {
+//   return {prompt: state.lines.prompt}
+// }
 
-export default connect(mapState)(NewMessageEntry)
+// export default connect(mapState)(NewMessageEntry)

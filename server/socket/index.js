@@ -20,6 +20,7 @@ module.exports = io => {
     socket.on('joinRoom', roomKey => {
       gameRooms[roomKey].numPlayers++
       socket.join(roomKey)
+      console.log(`${socket.id} joined room ${roomKey}`)
     })
 
     socket.on('getRoomCode', function() {
@@ -49,13 +50,18 @@ module.exports = io => {
     })
 
     //server listens for new line and sends it to all clients as a new prompt
-    socket.on('new-line-to-pass', prompt => {
-      socket.broadcast.emit('new-prompt', prompt)
+    socket.on('new-line-to-pass', data => {
+      const prompt = data.lineToPass
+      const key = data.roomKey
+      console.log('TRYING TO EMIT', data)
+      socket.to(key).emit('new-prompt', prompt)
     })
 
     //server listens for line to add to poem and sends it to all clients
-    socket.on('new-line-to-add', line => {
-      socket.broadcast.emit('update-poem', line)
+    socket.on('new-line-to-add', data => {
+      const line = data.lineToAdd
+      const key = data.roomKey
+      socket.to(key).emit('update-poem', line)
     })
 
     socket.on('disconnect', () => {

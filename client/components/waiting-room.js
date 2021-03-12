@@ -1,6 +1,7 @@
 import {requestRoomKey, joinRoom} from '../socket'
 //  joinRoom => {key, message: ''}; key can be null
 import React, {Component} from 'react'
+import store, {gotRoomKey} from '../store'
 
 export class WaitingRoom extends Component {
   constructor() {
@@ -27,6 +28,7 @@ export class WaitingRoom extends Component {
     const roomKey = evt.target.roomKey.value
     joinRoom(roomKey, response => {
       if (response.key) {
+        store.dispatch(gotRoomKey(response.key))
         this.props.history.push('/home')
       } else {
         this.setState({

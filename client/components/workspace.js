@@ -9,13 +9,19 @@ export class Workspace extends Component {
       <NewMessageEntry
         prompt={this.props.newPrompt}
         ismyTurn={this.props.isMyTurn}
+        roomKey={this.props.roomKey}
       />
+      //inspire me button
     )
   }
 }
 
 const mapState = state => {
-  return {newPrompt: state.lines.prompt, isMyTurn: state.lines.isMyTurn}
+  return {
+    newPrompt: state.lines.prompt,
+    isMyTurn: state.lines.isMyTurn,
+    roomKey: state.room
+  }
 }
 
 export default connect(mapState)(Workspace)
