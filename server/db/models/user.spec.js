@@ -14,10 +14,14 @@ describe('User model', () => {
       let cody
 
       beforeEach(async () => {
-        cody = await User.create({
-          email: 'cody@puppybook.com',
-          password: 'bones'
-        })
+        try {
+          cody = await User.create({
+            email: 'cody@puppybook.com',
+            password: 'bones'
+          })
+        } catch (error) {
+          console.log(error)
+        }
       })
 
       it('returns true if the password is correct', () => {

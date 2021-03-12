@@ -41,25 +41,29 @@ const getRemoteURL = (name, remotes) => {
 
 /* Run a command and return its stdout. */
 const getOutputFromCommand = async (command, args) => {
-  const response = await new Promise((resolve, reject) => {
-    const process = spawn(command, args)
+  try {
+    const response = await new Promise((resolve, reject) => {
+      const process = spawn(command, args)
 
-    const stdout = []
-    const stderr = []
+      const stdout = []
+      const stderr = []
 
-    process.stdout.on('data', data => {
-      stdout.push(data)
+      process.stdout.on('data', data => {
+        stdout.push(data)
+      })
+
+      process.stderr.on('data', data => {
+        stderr.push(data)
+      })
+
+      process.on('close', code => {
+        if (code) throw new Error(reject(stderr))
+        resolve(stdout)
+      })
     })
-
-    process.stderr.on('data', data => {
-      stderr.push(data)
-    })
-
-    process.on('close', code => {
-      if (code) throw new Error(reject(stderr))
-      resolve(stdout)
-    })
-  })
+  } catch (error) {
+    console.log(error)
+  }
   return response
 }
 
