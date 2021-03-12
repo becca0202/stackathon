@@ -6,5 +6,6 @@
 export {default as Navbar} from './navbar'
 export {default as Workspace} from './workspace'
 export {NewMessageEntry} from './new-message'
+export {WaitingRoom} from './waiting-room'
 export {default as UserHome} from './user-home'
 export {Login, Signup} from './auth-form'
