@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {addLine, passLine} from '../store/lines'
-import {connect} from 'react-redux'
 import history from '../history'
 
 export class NewMessageEntry extends Component {

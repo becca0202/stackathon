@@ -2,7 +2,8 @@ import axios from 'axios'
 import socket from '../socket'
 
 const GOT_NEW_PROMPT = 'GOT_NEW_PROMPT'
-const ADD_NEW_LINE = 'ADD_NEW_LINE'
+const GOT_RANDOM_POEM = 'GOT_RANDOM_POEM'
+// const ADD_NEW_LINE = 'ADD_NEW_LINE'
 
 export const gotNewPrompt = prompt => {
   return {
@@ -11,12 +12,19 @@ export const gotNewPrompt = prompt => {
   }
 }
 
-export const addLineToPoem = newLine => {
+export const gotRandomPoem = poem => {
   return {
-    type: ADD_NEW_LINE,
-    newLine
+    type: GOT_RANDOM_POEM,
+    poem
   }
 }
+
+// export const addLineToPoem = newLine => {
+//   return {
+//     type: ADD_NEW_LINE,
+//     newLine
+//   }
+// }
 
 //   try {
 //     let poem = JSON.parse(localStorage.getItem('poem'))
@@ -49,12 +57,26 @@ export const passLine = (lineToPass, roomKey) => {
   }
 }
 
-const initialState = {prompt: '', isMyTurn: false}
+export const getRandomPoem = () => {
+  return async dispatch => {
+    try {
+      const {data} = await axios.get('https://poetrydb.org/random')
+      console.log(data[0])
+      dispatch(gotRandomPoem(data[0]))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
+const initialState = {prompt: '', isMyTurn: false, randomPoem: {}}
 
 export default function promptReducer(state = initialState, action) {
   switch (action.type) {
     case GOT_NEW_PROMPT:
       return {prompt: action.prompt, isMyTurn: true}
+    case GOT_RANDOM_POEM:
+      return {...state, randomPoem: action.poem}
     default:
       return state
   }

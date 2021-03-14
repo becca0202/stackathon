@@ -31,7 +31,8 @@ module.exports = io => {
       }
       //add room key to dictionary of existing rooms
       gameRooms[key] = {
-        roomKey: key
+        roomKey: key,
+        numPlayers: 0
       }
       socket.emit('roomCreated', key)
     })
@@ -53,7 +54,6 @@ module.exports = io => {
     socket.on('new-line-to-pass', data => {
       const prompt = data.lineToPass
       const key = data.roomKey
-      console.log('TRYING TO EMIT', data)
       socket.to(key).emit('new-prompt', prompt)
     })
 
