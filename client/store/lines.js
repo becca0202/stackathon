@@ -74,7 +74,7 @@ const initialState = {prompt: '', isMyTurn: false, randomPoem: {}}
 export default function promptReducer(state = initialState, action) {
   switch (action.type) {
     case GOT_NEW_PROMPT:
-      return {prompt: action.prompt, isMyTurn: true}
+      return {...state, prompt: action.prompt, isMyTurn: true}
     case GOT_RANDOM_POEM:
       return {...state, randomPoem: action.poem}
     default:

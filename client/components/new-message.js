@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {addLine, passLine} from '../store/lines'
+import {isTyping1, isTyping2} from '../socket'
 import history from '../history'
 
 export class NewMessageEntry extends Component {
@@ -8,7 +9,8 @@ export class NewMessageEntry extends Component {
     this.state = {
       line1: '',
       line2: '',
-      waitingForTurn: false
+      waitingForTurn: false,
+      isTypingMessage: ''
     }
     this.handleChange1 = this.handleChange1.bind(this)
     this.handleChange2 = this.handleChange2.bind(this)
@@ -16,10 +18,6 @@ export class NewMessageEntry extends Component {
   }
 
   componentDidMount() {
-    // if (localStorage.getItem('poem')) {
-    // if cart exists in localstorage grab poem and set to local state
-    //   const totalPoem = JSON.parse(localStorage.getItem('poem'))
-    // }
     if (this.props.prompt) {
       this.setState({
         line1: this.props.prompt,
@@ -39,12 +37,20 @@ export class NewMessageEntry extends Component {
 
   handleChange1(event) {
     const line1 = event.target.value
+    const key = {key: this.props.roomKey}
     this.setState({line1})
+    isTyping1(key, message => {
+      this.setState({isTypingMessage: message})
+    })
   }
 
   handleChange2(event) {
     const line2 = event.target.value
+    const key = {key: this.props.roomKey}
     this.setState({line2})
+    isTyping2(key, message => {
+      this.setState({isTypingMessage: message})
+    })
   }
 
   handleSubmit(event) {
@@ -61,7 +67,7 @@ export class NewMessageEntry extends Component {
   }
 
   render() {
-    console.log(this.props)
+    console.log('state----->', this.state)
     return (
       <div>
         {!this.state.waitingForTurn ? (
@@ -92,7 +98,7 @@ export class NewMessageEntry extends Component {
           </form>
         ) : (
           <div>
-            <h1>Waiting for your partner...</h1>
+            <h1>{this.state.isTypingMessage}</h1>
           </div>
         )}
         <button

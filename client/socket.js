@@ -47,6 +47,30 @@ export function joinRoom(key, callback) {
   })
 }
 
+//Component passes typing and roomkey to this function
+export function isTyping1(key, callback) {
+  //take typing/roomkey and send to server
+  socket.emit('is-typing-line-1', key)
+
+  //client listens for if other user is typing, sends message to user (component)
+  socket.on('display-typing-1', function() {
+    const message = 'Your partner is typing...'
+    return callback(message)
+  })
+}
+
+//Component passes typing and roomkey to this function
+export function isTyping2(key, callback) {
+  //take typing/roomkey and send to server
+  socket.emit('is-typing-line-2', key)
+
+  //client listens for if other user is typing, sends message to user (component)
+  socket.on('display-typing-2', function() {
+    const message = 'Your partner is finishing up...'
+    return callback(message)
+  })
+}
+
 //client listens for a new prompt, then sends to store to update
 socket.on('new-prompt', prompt => {
   store.dispatch(gotNewPrompt(prompt))

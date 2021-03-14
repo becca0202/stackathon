@@ -5,7 +5,7 @@ import {getRandomPoem} from '../store/lines'
 
 export class Workspace extends Component {
   render() {
-    console.log(this.props)
+    console.log('WORKSPACE PROPS', this.props)
     return (
       <div>
         <NewMessageEntry

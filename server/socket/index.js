@@ -50,6 +50,17 @@ module.exports = io => {
       }
     })
 
+    //server listens for is typing and emits to all others in same room
+    socket.on('is-typing-line-1', data => {
+      const key = data.key
+      socket.to(key).emit('display-typing-1')
+    })
+
+    socket.on('is-typing-line-2', data => {
+      const key = data.key
+      socket.to(key).emit('display-typing-2')
+    })
+
     //server listens for new line and sends it to all clients as a new prompt
     socket.on('new-line-to-pass', data => {
       const prompt = data.lineToPass
