@@ -78,7 +78,7 @@ export class NewMessageEntry extends Component {
                 className="poem__line"
                 type="text"
                 name="line1"
-                placeholder="Start your poem"
+                placeholder="First line of your poem"
                 value={this.state.line1}
                 onChange={this.handleChange1}
               />
@@ -86,7 +86,7 @@ export class NewMessageEntry extends Component {
                 className="poem__line"
                 type="text"
                 name="line2"
-                placeholder="Line to pass"
+                placeholder="Start a line to pass on"
                 value={this.state.line2}
                 onChange={this.handleChange2}
               />
@@ -99,7 +99,7 @@ export class NewMessageEntry extends Component {
           </form>
         ) : (
           <div>
-            <h1>{this.state.isTypingMessage}</h1>
+            <h1 className="search__title">{this.state.isTypingMessage}</h1>
           </div>
         )}
         <button

@@ -43,7 +43,16 @@ export class WaitingRoom extends Component {
     console.log(this.state)
     return (
       <div>
-        {/* <p className="search__title">Welcome to Line By Line</p> */}
+        <p className="search__title">How to collaborate:</p>
+        <div className="instructions">
+          <ol>
+            <li>Write or complete the first line</li>
+            <li>Start a prompt on the next line</li>
+            <li>Pass to your partner</li>
+            <li>Wait for your partner to pass back</li>
+            <li>Publish your poem when you feel ready!</li>
+          </ol>
+        </div>
         <button
           className="btn striped-shadow dark"
           type="button"
