@@ -9,7 +9,7 @@ function codeGenerator() {
 
 //object with list of active game rooms
 const gameRooms = {
-  //[roomKey] : {roomKey: key, numOfPlayers: 0}
+  //[roomKey] : {roomKey: key, numOfPlayers: 0, users: [{[username]: socketId}]}
   //example ---> A6XY: {roomKey: A6XY}
 }
 
@@ -17,10 +17,13 @@ module.exports = io => {
   io.on('connection', socket => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
 
-    socket.on('joinRoom', roomKey => {
+    socket.on('joinRoom', data => {
+      const roomKey = data.key
+      const username = data.username
       gameRooms[roomKey].numPlayers++
+      gameRooms[roomKey].users.push({[username]: socket.id})
       socket.join(roomKey)
-      console.log(`${socket.id} joined room ${roomKey}`)
+      console.log(`${username} at ${socket.id} joined room ${roomKey}`)
     })
 
     socket.on('getRoomCode', function() {
@@ -32,8 +35,10 @@ module.exports = io => {
       //add room key to dictionary of existing rooms
       gameRooms[key] = {
         roomKey: key,
-        numPlayers: 0
+        numPlayers: 0,
+        users: []
       }
+      console.log('ROOM CREATED:', gameRooms[key])
       socket.emit('roomCreated', key)
     })
 
@@ -82,6 +87,10 @@ module.exports = io => {
       //check for user info in game rooms
       //decrease numOfPlayers
       //emit info to other people in the room
+    })
+
+    socket.on('ready-to-publish', key => {
+      socket.to(key).emit('partner-has-published')
     })
   })
 }

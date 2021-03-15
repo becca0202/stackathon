@@ -21,10 +21,10 @@ export function requestRoomKey(callback) {
 
 //CHECK ROOM CODE
 //take input field and pass it to this function
-export function joinRoom(key, callback) {
-  const response = {key, message: ''}
+export function joinRoom(data, callback) {
+  const response = {key: data.key, user: data.username, message: ''}
   //then emit an event to server to ask if key is valid
-  socket.emit('isKeyValid', key)
+  socket.emit('isKeyValid', data.key)
 
   //LISTEN FOR SERVER RESPONSE:
   socket.on('keyNotValid', function() {
@@ -34,7 +34,8 @@ export function joinRoom(key, callback) {
     return callback(response)
   })
   socket.on('keyIsValid', function(validKey) {
-    socket.emit('joinRoom', validKey)
+    const cleanData = {key: validKey, username: data.username}
+    socket.emit('joinRoom', cleanData)
     response.key = validKey
     response.message = 'Game Joined!'
     return callback(response)
@@ -89,4 +90,14 @@ socket.on('update-poem', line => {
   localStorage.setItem('poem', JSON.stringify(poem))
 })
 
+export function readyToPublish(key, callback) {
+  //take typing/roomkey and send to server
+  socket.emit('ready-to-publish', key)
+
+  //client listens for if other user is typing, sends message to user (component)
+  socket.on('partner-has-published', function() {
+    const message = 'Your partner has published your poem!'
+    return callback(message)
+  })
+}
 export default socket

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {addLine, passLine} from '../store/lines'
-import {isTyping1, isTyping2} from '../socket'
+import {isTyping1, isTyping2, readyToPublish} from '../socket'
 import history from '../history'
 
 export class NewMessageEntry extends Component {
@@ -70,11 +70,12 @@ export class NewMessageEntry extends Component {
     console.log('state----->', this.state)
     return (
       <div>
+        <p className="search__title">Start your poem</p>
         {!this.state.waitingForTurn ? (
           <form id="new-message-form" onSubmit={this.handleSubmit}>
-            <div>
+            <div className="search__container">
               <input
-                // className="form-control"
+                className="poem__line"
                 type="text"
                 name="line1"
                 placeholder="Start your poem"
@@ -82,7 +83,7 @@ export class NewMessageEntry extends Component {
                 onChange={this.handleChange1}
               />
               <input
-                // className="form-control"
+                className="poem__line"
                 type="text"
                 name="line2"
                 placeholder="Line to pass"
@@ -90,7 +91,7 @@ export class NewMessageEntry extends Component {
                 onChange={this.handleChange2}
               />
               <span className="input-group-btn">
-                <button className="btn btn-default" type="submit">
+                <button className="button1" type="submit">
                   Pass!
                 </button>
               </span>
@@ -102,8 +103,12 @@ export class NewMessageEntry extends Component {
           </div>
         )}
         <button
+          className="button1"
           type="button"
           onClick={() => {
+            // readyToPublish(this.props.roomKey, message => {
+            //   this.setState({isTypingMessage: message})
+            // })
             history.push('/publish')
           }}
         >

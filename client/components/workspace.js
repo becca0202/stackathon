@@ -5,7 +5,6 @@ import {getRandomPoem} from '../store/lines'
 
 export class Workspace extends Component {
   render() {
-    console.log('WORKSPACE PROPS', this.props)
     return (
       <div>
         <NewMessageEntry
@@ -13,11 +12,15 @@ export class Workspace extends Component {
           ismyTurn={this.props.isMyTurn}
           roomKey={this.props.roomKey}
         />
-        <button type="button" onClick={() => this.props.inspireMe()}>
+        <button
+          className="button1"
+          type="button"
+          onClick={() => this.props.inspireMe()}
+        >
           Inspire Me
         </button>
         {this.props.randomPoem.lines ? (
-          <div>
+          <div id="inspire-me-quote">
             <p>
               <i>"{this.props.randomPoem.lines[0]}"</i>
             </p>

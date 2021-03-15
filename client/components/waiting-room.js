@@ -26,7 +26,8 @@ export class WaitingRoom extends Component {
   handleSubmit(evt) {
     evt.preventDefault()
     const roomKey = evt.target.roomKey.value
-    joinRoom(roomKey, response => {
+    const username = evt.target.username.value
+    joinRoom({key: roomKey, username}, response => {
       if (response.key) {
         store.dispatch(gotRoomKey(response.key))
         this.props.history.push('/home')
@@ -42,21 +43,33 @@ export class WaitingRoom extends Component {
     console.log(this.state)
     return (
       <div>
-        <h3>Welcome to PoetryPass!</h3>
-        <button type="button" onClick={this.handleClick}>
+        {/* <p className="search__title">Welcome to Line By Line</p> */}
+        <button
+          className="btn striped-shadow dark"
+          type="button"
+          onClick={this.handleClick}
+        >
           Generate Room Key
         </button>
         <h1>{this.state.roomKey}</h1>
         <form id="new-message-form" onSubmit={this.handleSubmit}>
-          <div>
+          <div className="search__container">
             <input
-              // className="form-control"
+              className="search__input"
               type="text"
               name="roomKey"
               placeholder="Enter Room Key"
             />
+            <input
+              className="search__input"
+              type="text"
+              name="username"
+              placeholder="Enter Your Name"
+            />
           </div>
-          <button type="submit">Join Room</button>
+          <button className="btn striped-shadow dark" type="submit">
+            Join Room
+          </button>
         </form>
         <h1>{this.state.message}</h1>
       </div>
